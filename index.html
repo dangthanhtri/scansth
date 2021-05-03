@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
   <title>Web Scanner</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script src="jquery-3.3.1.js"></script>
   <script async src="opencv.js" type="text/javascript"></script>
   <script>
@@ -98,10 +101,16 @@ function drawPoints(points){
 window.process = async (file)=>{ 
     let ctx = $("canvas")[0].getContext('2d');
     const img = await loadImage(file);
-    $("canvas")[0].width = img.width;
-    $("canvas")[0].height = img.height;
+    var scaleSize = (img.width / img.height);
+    var heightScale = (window.innerHeight * scaleSize);
+    console.log(heightScale);
+    $("canvas")[0].width = window.innerWidth;
+    $("canvas")[0].height = heightScale;
+    //$("canvas")[0].width = img.width;
+    //$("canvas")[0].height = img.height;
     window.img = img;
-    ctx.drawImage(img,0,0,img.width,img.height);
+    ctx.drawImage(img,0,0,window.innerWidth,heightScale);
+    //ctx.drawImage(img,0,0,img.width,img.height);
 
     let image = cv.imread($("canvas")[0]);
     //BAD IDEA BEGIN
