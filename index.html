@@ -23,10 +23,10 @@ function init(){
 
     canvas = $("canvas")[0];
  
- canvas.onmousedown = canvasClick;
- canvas.onmouseup = stopDragging;
- canvas.onmouseout = stopDragging;
- canvas.onmousemove = dragCircle;
+ canvas.ontouchstart = canvasClick;
+ canvas.ontouchend = stopDragging;
+ canvas.ontouchcancel = stopDragging;
+ canvas.ontouchmove = dragCircle;
 
     switchView("select");
 }
@@ -53,13 +53,15 @@ function canvasClick(e){
       if(points[i].selected) points[i].selected = false;
     }
   }
+  console.log("Đang chạm vào");
 }
 function dragCircle(e){
 //   console.log(points);
   for(var i=0; i<points.length; i++) if(points[i].selected) {
     points[i].x =e.pageX - e.target.offsetLeft;
     points[i].y = e.pageY - e.target.offsetTop;
-    console.log("xxxx1x");
+    //console.log("xxxx1x");
+    console.log("Đang kéo");
   }
   draw();
 }
@@ -67,14 +69,15 @@ function stopDragging(e){
   for(var i=0; i<points.length; i++) {
     points[i].selected = false;
   }
+  console.log("Ngưng kéo");
 }
 function draw(){
   canvas = $("canvas")[0];
   context = canvas.getContext("2d");
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.drawImage(img,0,0,img.width,img.height);
+  context.drawImage(img,0,0,canvas.width, canvas.height);
+  //context.drawImage(img,0,0,img.width,img.height); Chỗ này xài dòng trên vì nếu không sẽ bị thay đổi hình ảnh khi click vào
   drawPoints(points);
-
 }
 function drawPoints(points){
     let context = $("canvas")[0].getContext('2d');
