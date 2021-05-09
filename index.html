@@ -168,6 +168,7 @@ window.process = async (file)=>{
 }
 
 function process2(){
+  cv.cvtColor(image, image, cv.COLOR_BGR2GRAY);
     //use window.points & $("canvas") as its input .... TOO STUPID!!!
     const tl = points[0],tr=points[1],br=points[2],bl=points[3]; //stands for top-left,top-right ....
 
@@ -184,12 +185,15 @@ function process2(){
     const from = cv.matFromArray(4,1,cv.CV_32FC2,[points[0].x,points[0].y,points[1].x,points[1].y,points[2].x,points[2].y,points[3].x,points[3].y]);
     const to = cv.matFromArray(4,1,cv.CV_32FC2,[0,0,width-1,0,width-1,height-1,0,height-1]);
     const M = cv.getPerspectiveTransform(from,to);
+    
     let out = new cv.Mat();
     let size = new cv.Size();
     size.width = width;
     size.height = height;
+    
     cv.warpPerspective(image,out,M,size);
     cv.imshow($("canvas")[0],out);
+    console.log(out);
 }
 
 function switchView(name){
