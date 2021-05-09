@@ -21,13 +21,17 @@ body{
     min-height: 100vh;
     background-color: #fff;
     position:fixed;
+    width: 100vw;
 }
 .nav-bar {
     text-align: center;
+    margin: 15px;
 }
 
 .container {
     text-align: center;
+    margin-top:  5px;
+    width: 100vw;
 }
 
 .button {
@@ -41,7 +45,6 @@ body{
 }
   </style>
   <script>
-    
 function init(){
     //bind events
     console.log("Initing...");
@@ -54,20 +57,20 @@ function init(){
 
     canvas = $("canvas")[0];
 
- if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-   console.log("moblie");
-   canvas.ontouchstart = canvasClick;
-    canvas.ontouchend = stopDragging;
-    canvas.ontouchcancel = stopDragging;
-    canvas.ontouchmove = dragCircle;
-  } else{
-    console.log("not moblie");
-    
-    canvas.onmousedown = canvasClick;
-   canvas.onmouseup = stopDragging;
-   canvas.onmouseout = stopDragging;
-   canvas.onmousemove = dragCircle;
-  }
+      if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      console.log("moblie");
+      canvas.ontouchstart = canvasClick;
+      canvas.ontouchend = stopDragging;
+      canvas.ontouchcancel = stopDragging;
+      canvas.ontouchmove = dragCircle;
+      } else{
+      console.log("not moblie");
+      canvas.onmousedown = canvasClick;
+      canvas.onmouseup = stopDragging;
+      canvas.onmouseout = stopDragging;
+      canvas.onmousemove = dragCircle;
+    }
+ 
   switchView("select");
 }
 
@@ -235,6 +238,7 @@ function process2(){
     console.log($("canvas")[0].width, $("canvas")[0].height);
     ///console.log(out);
     M.delete(); from.delete(); to.delete();
+    $("#imgConvert").hide();
 }
 
 function switchView(name){
@@ -256,7 +260,7 @@ function switchView(name){
             <div class="view-clip">
                 <div class="nav-bar">
                     <h1>CÔNG CHỨNG SỐ</h1>
-                    <button class="button" onclick="process2();">Next</button>
+                    <button id="imgConvert" class="button" onclick="process2();">Next</button>
                 </div>
                 <div class="container">
                     <canvas></canvas>
@@ -273,8 +277,7 @@ function switchView(name){
     </div>
 
     <script>
-        init();
-        
+      init();
     </script>
 </body>
 </html>
