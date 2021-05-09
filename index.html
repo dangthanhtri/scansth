@@ -4,13 +4,43 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-  <title>Web Scanner</title>
+  <title>Hệ thống công chứng số</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <link rel="stylesheet" type="text/css" href="css/style.css" />
   <script src="jquery-3.3.1.js"></script>
   <script async src="opencv.js" type="text/javascript"></script>
+  <style>
+    *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    min-height: 100vh;
+    background-color: #fff;
+}
+.nav-bar {
+    text-align: center;
+}
+
+.container {
+    text-align: center;
+}
+
+.button {
+    background-color: dimgrey;
+    color: white;
+    width: 90vw;
+    height: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+  </style>
   <script>
+    
 function init(){
     //bind events
     console.log("Initing...");
@@ -39,7 +69,6 @@ function init(){
   }
   switchView("select");
 }
-
 
 function loadImage(file){
     return new Promise((resolve,reject)=>{
@@ -168,32 +197,43 @@ window.process = async (file)=>{
 }
 
 function process2(){
-  cv.cvtColor(image, image, cv.COLOR_BGR2GRAY);
+  console.log($("canvas")[0].width, $("canvas")[0].height);
+    cv.cvtColor(image, image, cv.COLOR_BGR2GRAY); //Chuyển sang ảnh trắng đen
     //use window.points & $("canvas") as its input .... TOO STUPID!!!
-    const tl = points[0],tr=points[1],br=points[2],bl=points[3]; //stands for top-left,top-right ....
+    
+    const tl = points[0],bl=points[1],br=points[2],tr=points[3]; //stands for top-left,top-right ....
 
-    const width = Math.max(
+    const width = parseInt(Math.max(
         Math.sqrt((br.x-bl.x)**2 + (br.y-bl.y)**2),
         Math.sqrt((tr.x-tl.x)**2 + (tr.y-tl.y)**2),
-    );
+    ));
 
-    const height = Math.max(
+    const height = parseInt(Math.max(
         Math.sqrt((tr.x-br.x)**2 + (tr.y-br.y)**2),
         Math.sqrt((tl.x-bl.x)**2 + (tl.y-bl.y)**2),
-    );
-
+    ));
+    console.log("width: ",width);
+    console.log("height: ", height);
+    let size = new cv.Size(width,height);
     const from = cv.matFromArray(4,1,cv.CV_32FC2,[points[0].x,points[0].y,points[1].x,points[1].y,points[2].x,points[2].y,points[3].x,points[3].y]);
-    const to = cv.matFromArray(4,1,cv.CV_32FC2,[0,0,width-1,0,width-1,height-1,0,height-1]);
+    //const to = cv.matFromArray(4,1,cv.CV_32FC2,[0,0,width-1,0, width-1,height-1,0,height-1]);
+    const to = cv.matFromArray(4,1,cv.CV_32FC2,[0,0,0,height-1, width-1,height-1,width-1,0]);
     const M = cv.getPerspectiveTransform(from,to);
     
     let out = new cv.Mat();
-    let size = new cv.Size();
-    size.width = width;
-    size.height = height;
+    
+    //size.width = width;
+    //size.height = height;
+    console.log("new width: ",width);
+    console.log("new height: ", height);
     
     cv.warpPerspective(image,out,M,size);
+
     cv.imshow($("canvas")[0],out);
-    console.log(out);
+    
+    console.log($("canvas")[0].width, $("canvas")[0].height);
+    ///console.log(out);
+    M.delete(); from.delete(); to.delete();
 }
 
 function switchView(name){
@@ -208,14 +248,14 @@ function switchView(name){
     <div id="viewSwitcher">
             <div class="view-select">
                     <div class="nav-bar">
-                            <h1>Web Scanner</h1>
+                            <h1>CÔNG CHỨNG SỐ</h1>
                         </div>
-                        <input type="file" name="img" accept="image/*"  multiple>
+                        <input class="button" type="file" name="img" accept="image/*"  multiple>
             </div>
             <div class="view-clip">
                 <div class="nav-bar">
-                    <h1>Web Scanner</h1>
-                    <button onclick="process2();">Next</button>
+                    <h1>CÔNG CHỨNG SỐ</h1>
+                    <button class="button" onclick="process2();">Next</button>
                 </div>
                 <div class="container">
                     <canvas></canvas>
@@ -223,7 +263,7 @@ function switchView(name){
             </div>
             <div class="view-save">
                 <div class="nav-bar">
-                    <h1>Web Scanner</h1>
+                    <h1>CÔNG CHỨNG SỐ</h1>
                     <button>Export as pdf</button>
                 </div>
                 <div class="container">
