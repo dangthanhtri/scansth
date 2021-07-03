@@ -1,5 +1,5 @@
 // Set constraints for the video stream
-var constraints = { video: { facingMode: "environment" }, audio: false };
+var constraints = { video: { facingMode: { exact: "environment" } }, audio: false };
 var track = null;
 
 // Define constants
@@ -17,7 +17,8 @@ function cameraStart() {
             cameraView.srcObject = stream;
         })
         .catch(function(error) {
-            console.error("Oops. Something is broken.", error);
+          alert("Oops. Something is broken.", error);
+            //console.error("Oops. Something is broken.", error);
         });
 }
 
