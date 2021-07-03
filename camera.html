@@ -1,49 +1,77 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<script src="jquery-3.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 <head>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-    <title>Scanner App</title>
+    <style>
+        /* CSS comes here */
+        #video {
+            border: 1px solid black;
+            /* width: 320px;
+        height: 240px; */
+            width: 100vw;
+        }
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        #photo {
+            border: 1px solid black;
+            width: 320px;
+            height: 240px;
+        }
 
+        #canvas {
+            display: block;
+        }
+
+        .camera {
+            /* width: 340px;
+        display: inline-block; */
+            width: 100vw;
+            position: absolute;
+        }
+
+        .output {
+            width: 100vw;
+            display: inline-block;
+            margin-top: 50vh;
+        }
+
+        #startbutton {
+            height: 80px;
+            width: 80px;
+            border-radius: 40px;
+            display: block;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            bottom: 36px;
+            padding: 5px;
+            background-color: #6a67ce;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 1.0);
+            cursor: pointer;
+        }
+
+        .contentarea {
+            font-size: 16px;
+            font-family: Arial;
+            text-align: center;
+        }
+    </style>
+    <title>My Favorite Sport</title>
 </head>
 
 <body>
-
-    <div id="HomeScr">
-        <h1>Màn Hình chính</h1>
-    </div>
-
-    <div id="CameraScr">
+    <div class="contentarea">
         <div class="camera">
             <video id="video">Video stream not available.</video>
         </div>
+        <div><button id="startbutton">Take photo</button></div>
         <canvas id="canvas"></canvas>
         <div class="output" style="display: none;">
             <img id="photo" alt="The screen capture will appear in this box.">
         </div>
     </div>
 
-    <nav class="mobile-bottom-nav">
-        <!-- <div id="Home" class="mobile-bottom-nav__item ">
-            <div class="mobile-bottom-nav__item-content">
-                <i class="fa fa-home" aria-hidden="true"></i>
-                Home
-            </div>
-        </div> -->
-        <div id="startbutton" class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
-            <div class="mobile-bottom-nav__item-content">
-                <i class="fa fa-camera" aria-hidden="true"></i>
-                Camera
-            </div>
-        </div>
-    </nav>
-
-    <script type="application/javascript" src="js/main.js"></script>
     <script>
         /* JS comes here */
         (function () {
