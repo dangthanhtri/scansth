@@ -1,146 +1,55 @@
-<!DOCTYPE html>
-<html>
+<html lang=”en”>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="application-name" content="Camera app">
+		<meta name="apple-mobile-web-app-title" content="Camera app">
 
-<head>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
-    <title>Scanner App</title>
+		<!-- Name of the app -->
+		<title>Camera App</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+		<!-- Link to site manifest -->
+		<link rel="manifest" href="site.webmanifest">
 
-</head>
+		<!-- Links to icons -->
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+		<link rel="manifest" href="site.webmanifest">
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#603cba">
+		<meta name="msapplication-TileColor" content="#603cba">
+		<meta name="theme-color" content="#ffffff">
 
-<body>
+		<!-- Link to main style sheet -->
+		<link rel="stylesheet" href="style.css"> 
+	</head>
+	<body>
 
-    <div id="HomeScr">
-        <h1>Màn Hình chính</h1>
-    </div>
+		<!-- Camera -->
+		<main id="camera">
 
-    <div id="CameraScr">
-        <div class="camera">
-            <video id="video">Video stream not available.</video>
-        </div>
-        <canvas id="canvas"></canvas>
-        <div class="output" style="display: none;">
-            <img id="photo" alt="The screen capture will appear in this box.">
-        </div>
-    </div>
+		    <!-- Camera sensor -->
+		    <canvas id="camera--sensor"></canvas>
+		    
+		    <!-- Camera view -->
+		    <video id="camera--view" autoplay playsinline></video>
+		    
+		    <!-- Camera output -->
+		    <img src="//:0" alt="" id="camera--output">
 
-    <nav class="mobile-bottom-nav">
-        <!-- <div id="Home" class="mobile-bottom-nav__item ">
-            <div class="mobile-bottom-nav__item-content">
-                <i class="fa fa-home" aria-hidden="true"></i>
-                Home
-            </div>
-        </div> -->
-        <div id="startbutton" class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
-            <div class="mobile-bottom-nav__item-content">
-                <i class="fa fa-camera" aria-hidden="true"></i>
-                Camera
-            </div>
-        </div>
-    </nav>
+		    <!-- Camera trigger -->
+		    <button id="camera--trigger">Take a picture</button>
 
-    <script type="application/javascript" src="js/main.js"></script>
-    <script>
-        /* JS comes here */
-        (function () {
-            var taken = false;
-            var width = window.innerWidth; // We will scale the photo width to this
-            var height = 0; // This will be computed based on the input stream
+		</main>
 
-            var streaming = false;
+		<!-- Reference to your JavaScript file -->
+		<script src="app.js"></script>
 
-            var video = null;
-            var canvas = null;
-            var photo = null;
-            var startbutton = null;
+		<!-- Reference to adapter.js -->
+		<script src="adapter-min.js"></script>
 
-            function startup() {
-                video = document.getElementById('video');
-                canvas = document.getElementById('canvas');
-                photo = document.getElementById('photo');
-                startbutton = document.getElementById('startbutton');
-
-                navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
-                })
-                    .then(function (stream) {
-                        video.srcObject = stream;
-                        video.play();
-                    })
-                    .catch(function (err) {
-                        alert("An error occurred: " + err);
-                        console.log("An error occurred: " + err);
-                    });
-
-                video.addEventListener('canplay', function (ev) {
-                    if (!streaming) {
-                        height = video.videoHeight / (video.videoWidth / width);
-
-                        if (isNaN(height)) {
-                            height = width / (4 / 3);
-                        }
-
-                        video.setAttribute('width', width);
-                        video.setAttribute('height', height);
-                        canvas.setAttribute('width', width);
-                        canvas.setAttribute('height', height);
-                        streaming = true;
-                    }
-                }, false);
-
-                startbutton.addEventListener('click', function (ev) {
-                    takepicture();
-                    ev.preventDefault();
-                }, false);
-
-                clearphoto();
-            }
-
-
-            function clearphoto() {
-                var context = canvas.getContext('2d');
-                context.fillStyle = "#AAA";
-                context.fillRect(0, 0, canvas.width, canvas.height);
-
-                var data = canvas.toDataURL('image/png');
-                photo.setAttribute('src', data);
-            }
-
-            function takepicture() {
-                if (taken == false) {
-                    switchView("canvas");
-                    taken = true;
-                    var context = canvas.getContext('2d');
-                    if (width && height) {
-                        canvas.width = width;
-                        canvas.height = height;
-                        context.drawImage(video, 0, 0, width, height);
-
-                        var data = canvas.toDataURL('image/png');
-                        photo.setAttribute('src', data);
-                    } else {
-                        clearphoto();
-                    }
-                } else {
-                    switchView("video");
-                    taken = false;
-                }
-
-            }
-
-            window.addEventListener('load', startup, false);
-        })();
-
-        function switchView(name) {
-            $("#video , #canvas").hide();
-            $(`${name}`).show();
-        }
-    </script>
-</body>
-
+	</body>
 </html>
