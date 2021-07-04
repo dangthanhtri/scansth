@@ -1,8 +1,9 @@
 // Set constraints for the video stream
-var constraints = { video: { facingMode: { ideal: "environment" } }, audio: false };
+var constraints = { video: {facingMode: {exact: "environment"}}, audio: false };
 var track = null;
 
 // Define constants
+// navigator.mediaDevices.getUserMedia({video: {pan: true, zoom: true, facingMode: {exact: "environment"}}
 const cameraView = document.querySelector("#camera--view"),
     cameraOutput = document.querySelector("#camera--output"),
     cameraSensor = document.querySelector("#camera--sensor"),
