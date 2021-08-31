@@ -19,8 +19,8 @@ function cameraStart() {
             alert(constraints);
         })
         .catch(function(error) {
-          alert("Oops. Something is broken.", error);
-            //console.error("Oops. Something is broken.", error);
+          //alert("Oops. Something is broken.", error);
+          console.error("Oops. Something is broken.", error);
         });
 }
 
